@@ -1,17 +1,29 @@
-from loguru import logger
+try:
+    from loguru import logger
+except ImportError:
+    import logging
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logger.info("Using standard logging (loguru not available)")
+
 import urllib3
 import sys
 import asyncio
 import platform
-import logging
+import os
 
-from process import start
-from src.utils.output import show_logo, show_dev_info
-from src.utils.check_github_version import check_version
-from accounts_manager import get_account_manager
-from data_manager import get_data_manager
-from analytics_manager import get_analytics_manager
-from config import get_config, configure_bot
+try:
+    from process import start
+    from src.utils.output import show_logo, show_dev_info
+    from src.utils.check_github_version import check_version
+    from accounts_manager import get_account_manager
+    from data_manager import get_data_manager
+    from analytics_manager import get_analytics_manager
+    from config import get_config, configure_bot
+except ImportError as e:
+    print(f"❌ Import error: {e}")
+    print("🔧 Please run setup first: python setup.py install")
+    sys.exit(1)
 
 VERSION = "3.0.0"
 
@@ -21,6 +33,19 @@ if platform.system() == "Windows":
 
 
 async def main():
+    # Check if dependencies are installed
+    try:
+        import loguru
+        import aiohttp
+        import curl_cffi
+    except ImportError as e:
+        print(f"❌ Missing dependencies: {e}")
+        print("🔧 Please install dependencies first:")
+        print("   python setup.py install")
+        print("   or")
+        print("   pip install -r requirements.txt")
+        return
+    
     show_logo()
     show_dev_info()
     

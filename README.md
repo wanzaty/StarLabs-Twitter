@@ -60,37 +60,28 @@ A next-generation pure Python Twitter automation platform with advanced analytic
 ## 🔧 Installation
 
 ### Quick Start
-1. Clone the repository:
+1. **Quick Installation (Recommended):**
 ```bash
-git clone https://github.com/0xStarLabs/StarLabs-Twitter
-cd StarLabs-Twitter
+# Quick setup without virtual environment
+python quick_start.py
+# or
+python setup.py quick-install
 ```
 
-2. Run the setup script:
+2. **Full Installation with Virtual Environment:**
 ```bash
 python setup.py install
 ```
 
-3. Start the bot:
+3. **Manual Installation:**
 ```bash
-python setup.py start
-# or
+pip install -r requirements.txt
 python main.py
 ```
 
-### Advanced Installation
+### Start the Bot
 ```bash
-# Full installation with all features
-python setup.py install
-
-# Configure the bot
-python setup.py configure
-
-# Check system status
-python setup.py status
-
-# Run tests
-python setup.py test
+python main.py
 ```
 
 ## 🚀 Quick Start

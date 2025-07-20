@@ -350,39 +350,63 @@ def main():
             if Path("__pycache__").exists():
                 shutil.rmtree("__pycache__")
                 print("✅ Cache cleared")
+        elif command == "quick-install":
+            # Quick install without virtual environment
+            print("🚀 Quick install (system-wide)...")
+            try:
+                subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
+                print("✅ Dependencies installed successfully")
+                setup_data_directories()
+                create_default_config()
+                print("✅ Quick setup completed!")
+            except subprocess.CalledProcessError as e:
+                print(f"❌ Quick install failed: {e}")
         else:
             print("❌ Unknown command")
-            print("Available commands: install, start, test, configure, status, venv, requirements, clean")
+            print("Available commands: install, start, test, configure, status, venv, requirements, clean, quick-install")
     else:
         print("🌟 StarLabs Twitter Bot v3.0 Setup")
         print("=" * 50)
         print("[1] Full setup (install everything)")
-        print("[2] Start bot")
-        print("[3] Run tests")
-        print("[4] Configure bot")
-        print("[5] Show status")
-        print("[6] Create virtual environment only")
-        print("[7] Install requirements only")
-        print("[8] Clean installation")
-        print("[9] Exit")
+        print("[2] Quick install (system-wide)")
+        print("[3] Start bot")
+        print("[4] Run tests")
+        print("[5] Configure bot")
+        print("[6] Show status")
+        print("[7] Create virtual environment only")
+        print("[8] Install requirements only")
+        print("[9] Clean installation")
+        print("[10] Exit")
         
         choice = input("\nYour choice: ").strip()
         
         if choice == "1":
             full_setup()
         elif choice == "2":
-            run_bot()
+            # Quick install
+            print("🚀 Quick install (system-wide)...")
+            try:
+                subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
+                print("✅ Dependencies installed successfully")
+                setup_data_directories()
+                create_default_config()
+                print("✅ Quick setup completed!")
+                print("Now you can run: python main.py")
+            except subprocess.CalledProcessError as e:
+                print(f"❌ Quick install failed: {e}")
         elif choice == "3":
-            run_tests()
+            run_bot()
         elif choice == "4":
-            configure_interactive()
+            run_tests()
         elif choice == "5":
-            show_status()
+            configure_interactive()
         elif choice == "6":
-            create_virtual_environment()
+            show_status()
         elif choice == "7":
-            install_requirements()
+            create_virtual_environment()
         elif choice == "8":
+            install_requirements()
+        elif choice == "9":
             print("🧹 This will remove the virtual environment and cache")
             confirm = input("Continue? (y/n): ").strip().lower()
             if confirm == 'y':
@@ -393,7 +417,7 @@ def main():
                 if Path("__pycache__").exists():
                     shutil.rmtree("__pycache__")
                     print("✅ Cache cleared")
-        elif choice == "9":
+        elif choice == "10":
             print("👋 Goodbye!")
         else:
             print("❌ Invalid choice")
