@@ -13,8 +13,21 @@ import platform
 import os
 
 # Safe imports with error handling
-from process import start
-from src.utils.output import show_logo, show_dev_info
+try:
+    from process import start
+except ImportError as e:
+    logger.error(f"Error importing process: {e}")
+    def start():
+        print("Process module not available")
+        return
+
+try:
+    from src.utils.output import show_logo, show_dev_info
+except ImportError:
+    def show_logo():
+        print("🌟 StarLabs Twitter Bot v3.0")
+    def show_dev_info():
+        print("📚 Documentation: https://star-labs.gitbook.io/")
 
 try:
     from src.utils.check_github_version import check_version

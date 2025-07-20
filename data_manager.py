@@ -159,13 +159,13 @@ class SimpleDataManager:
         try:
             # For simplicity, just scan the images directory
             self.media_items = []
-            return []
             self._scan_images_directory()
             logger.success(f"Loaded {len(self.media_items)} media items")
             return self.media_items
-            except Exception as e:
-                logger.error(f"Error loading media items: {e}")
-                self.media_items = []
+        except Exception as e:
+            logger.error(f"Error loading media items: {e}")
+            self.media_items = []
+            return []
     def _scan_images_directory(self):
         """Scan images directory for new files"""
         images_dir = os.path.join(self.data_dir, "images")
