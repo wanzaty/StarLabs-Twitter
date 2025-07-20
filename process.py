@@ -12,7 +12,7 @@ from src.utils.logs import (
     save_task_logs_to_excel,
 )
 from src.utils.config_browser import run
-from src.utils.reader import read_accounts_from_excel
+from accounts_manager import read_accounts_from_storage
 from src.utils.telegram_logger import send_telegram_message
 from src.model.mutual_subscription import execute_mutual_subscription
 from src.model.instance import Instance
@@ -70,10 +70,10 @@ async def start():
     config.FLOW.TASKS = selected_tasks
 
     # Читаем аккаунты из Excel вместо базы данных
-    accounts_to_process = read_accounts_from_excel("data/accounts.xlsx")
+    accounts_to_process = read_accounts_from_storage()
 
     if not accounts_to_process:
-        logger.error("No accounts found in Excel file. Please add accounts first.")
+        logger.error("No accounts found in storage. Please add accounts first.")
         input("Press Enter to continue...")
         return
 
@@ -310,10 +310,10 @@ async def run_mutual_subscription():
     config = src.utils.get_config()
 
     # Read accounts from Excel
-    accounts_to_process = read_accounts_from_excel("data/accounts.xlsx")
+    accounts_to_process = read_accounts_from_storage()
 
     if not accounts_to_process:
-        logger.error("No accounts found in Excel file. Please add accounts first.")
+        logger.error("No accounts found in storage. Please add accounts first.")
         input("Press Enter to continue...")
         return
 

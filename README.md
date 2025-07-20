@@ -1,5 +1,5 @@
 # StarLabs Twitter Bot 2.1 🌟
-A powerful Python-based Twitter automation tool with multithreading support and comprehensive statistics tracking.
+A powerful pure Python Twitter automation tool with multithreading support and comprehensive statistics tracking.
 
 ## 📚 Documentation & Tutorials
 > ### [📖 English Tutorial](https://star-labs.gitbook.io/star-labs/twitter/eng)
@@ -9,8 +9,8 @@ A powerful Python-based Twitter automation tool with multithreading support and 
 - 📊 Real-time statistics display
 - 🎨 Beautiful CLI interface with gradient display
 - 🔄 Automatic retries with configurable attempts
-- 🔧 Configurable execution settings
-- 📝 Excel-based account management
+- 🔧 Python-based configuration system
+- 📝 JSON-based account management
 - 🚀 Multiple account support with optional shuffle
 - 📱 Telegram integration for reporting
 - 🛠️ Wide range of Twitter actions:
@@ -24,7 +24,7 @@ A powerful Python-based Twitter automation tool with multithreading support and 
 
 ## 📋 Requirements
 - Python 3.11.6 or higher
-- Excel file with Twitter accounts
+- JSON storage for Twitter accounts
 - Valid Twitter authentication tokens
 - (Optional) Proxies for account management
 
@@ -35,25 +35,42 @@ git clone https://github.com/0xStarLabs/StarLabs-Twitter
 cd StarLabs-Twitter
 ```
 
-2. Install the requirements:
+2. Run the setup script:
 ```bash
-pip install -r requirements.txt
+python setup.py install
 ```
 
-3. Configure your accounts and settings (see Configuration section)
+3. Start the bot:
+```bash
+python setup.py start
+# or
+python main.py
+```
 
-4. Run the bot:
+## 🚀 Quick Start
+1. Run the setup:
+```bash
+python setup.py install
+```
+
+2. Start the bot and follow the interactive setup:
 ```bash
 python main.py
 ```
+
+3. Use the menu to:
+   - Add your Twitter accounts
+   - Configure bot settings
+   - Add tweet texts and images
+   - Start farming
 
 ## 📁 Project Structure
 ```
 StarLabs-Twitter/
 ├── data/
-│   ├── accounts.xlsx        # Twitter accounts data
-│   ├── tweet_text.txt       # Tweets content
-│   ├── comment_text.txt     # Comments for interactions
+│   ├── accounts.json        # Twitter accounts data
+│   ├── tweet_texts.json     # Tweets content
+│   ├── comment_texts.json   # Comments for interactions
 │   └── images/              # Images for media tweets
 ├── src/
 │   ├── model/               # Core Twitter functionality
@@ -63,77 +80,51 @@ StarLabs-Twitter/
 │   │   └── start.py         # Main execution flow
 │   └── utils/               # Utility functions
 │       ├── telegram_logger.py # Telegram integration
-│       ├── reader.py        # File and data readers
+│       ├── reader.py        # Data readers (compatibility)
 │       ├── output.py        # CLI output formatting
-│       └── config.py        # Configuration manager
+│       └── config.py        # Configuration compatibility
+├── config.py                # Main configuration module
+├── accounts_manager.py      # Account management
+├── data_manager.py          # Text and image management
+├── setup.py                 # Setup and installation
 ├── process.py               # Main process handler
-├── config.yaml              # Configuration settings
 └── main.py                  # Entry point
 ```
 
 ## 📝 Configuration
 
-### 1. Account Setup (accounts.xlsx)
-Your Excel file should have the following columns:
-```
-AUTH_TOKEN | PROXY | USERNAME | STATUS
-```
-- **AUTH_TOKEN**: Your Twitter auth_token (required)
-- **PROXY**: Proxy in format user:pass@ip:port (optional)
-- **USERNAME**: Will be auto-filled by the bot
-- **STATUS**: Account status, auto-updated by the bot
+### 1. Account Setup
+The bot now uses JSON storage for accounts. Use the interactive menu to:
+- Add accounts with auth tokens and proxies
+- View and manage existing accounts
+- Remove accounts when needed
 
-### 2. Configuration (config.yaml)
-The bot's behavior is controlled through the config.yaml file:
+### 2. Configuration
+All configuration is now done through Python. Use the interactive configuration menu to set:
+- Number of threads
+- Retry attempts
+- Telegram notifications
+- Tweet and comment settings
 
-```yaml
-SETTINGS:
-  THREADS: 1                      # Number of parallel threads
-  ATTEMPTS: 5                     # Retry attempts for failed actions
-  ACCOUNTS_RANGE: [0, 0]          # Account range to process (0,0 = all)
-  EXACT_ACCOUNTS_TO_USE: []       # Specific accounts to use (e.g., [1, 4, 6])
-  SHUFFLE_ACCOUNTS: true          # Randomize account processing order
-  PAUSE_BETWEEN_ATTEMPTS: [3, 10] # Random pause between retries (seconds)
-  RANDOM_PAUSE_BETWEEN_ACCOUNTS: [3, 10]  # Pause between accounts (seconds)
-  RANDOM_PAUSE_BETWEEN_ACTIONS: [3, 10]   # Pause between actions (seconds)
-  RANDOM_INITIALIZATION_PAUSE: [3, 10]    # Initial pause for accounts
-  
-  # Telegram notifications
-  SEND_TELEGRAM_LOGS: false
-  SEND_ONLY_SUMMARY: false
-  TELEGRAM_BOT_TOKEN: "your_token_here"
-  TELEGRAM_USERS_IDS: [your_user_id]
-
-FLOW:
-  SKIP_FAILED_TASKS: false        # Continue after task failures
-
-TWEETS:
-  RANDOM_TEXT_FOR_TWEETS: false   # Use random text from file
-  RANDOM_PICTURE_FOR_TWEETS: true # Use random pictures from folder
-
-COMMENTS:
-  RANDOM_TEXT_FOR_COMMENTS: false # Use random text from file
-  RANDOM_PICTURE_FOR_COMMENTS: true # Use random pictures for comments
-```
-
-### 3. Content Files
-- **tweet_text.txt**: One tweet text per line
-- **comment_text.txt**: One comment text per line
-- **images/**: Place your .jpg or .png images for media tweets/comments
+### 3. Content Management
+Use the interactive menu to manage:
+- **Tweet texts**: Add, view, and edit tweet content
+- **Comment texts**: Add, view, and edit comment content
+- **Images**: Place .jpg or .png images in the data/images/ folder
 
 ## 🚀 Usage
-1. Prepare your account data in accounts.xlsx
-2. Configure bot settings in config.yaml
-3. Run the bot:
+1. Run the setup and start the bot:
 ```bash
 python main.py
 ```
-4. Select an option from the menu:
-   - ⭐️ Start farming
-   - 🔧 Edit config
-   - 👋 Exit
 
-5. Choose tasks to perform:
+2. Use the main menu to:
+   - Manage accounts
+   - Configure settings
+   - Add content (tweets, comments, images)
+   - Start farming
+
+3. When farming, choose tasks to perform:
    - Follow
    - Like
    - Retweet
@@ -147,7 +138,7 @@ python main.py
    - Check Valid
    - Exit
 
-6. For each task, the bot will prompt for necessary input such as usernames or tweet URLs
+4. For each task, the bot will prompt for necessary input such as usernames or tweet URLs
 
 ## 📊 Statistics
 The bot tracks detailed statistics for each run:
@@ -157,6 +148,14 @@ The bot tracks detailed statistics for each run:
 - Task-specific performance metrics
 
 Optional Telegram reporting can send detailed statistics at the end of execution.
+
+## 🔧 Advanced Usage
+
+### Command Line Setup
+```bash
+python setup.py install    # Full installation
+python setup.py start      # Start the bot
+```
 
 ## 🌐 Support
 - GitHub: https://github.com/0xStarLabs

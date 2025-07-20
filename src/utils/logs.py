@@ -90,70 +90,10 @@ async def update_account_in_excel(
     file_path: str, auth_token: str, username: str = None, status: str = None
 ) -> None:
     """
-    Update account fields in Excel file for specified auth_token.
-
-    Args:
-        file_path: Path to the Excel file
-        auth_token: Authentication token to identify the account
-        username: New username to set (optional)
-        status: New status to set (optional)
-
-    Raises:
-        Exception: If any error occurs during the update process
+    Update account information (now uses JSON storage instead of Excel)
     """
-    # Lock the mutex before accessing the file
-    async with excel_mutex_async:
-        try:
-            # Run the blocking file operations in a thread pool
-            def update_excel():
-                with excel_mutex:
-                    # Open the Excel file
-                    workbook = openpyxl.load_workbook(file_path)
-
-                    # Get the first sheet
-                    sheet = workbook.active
-
-                    # Find the row with matching auth token
-                    row_index = None
-                    for i, row in enumerate(sheet.iter_rows(values_only=True), 1):
-                        if row[0] == auth_token:
-                            row_index = i
-                            break
-
-                    if row_index is None:
-                        raise Exception("Account not found in Excel file")
-
-                    updated_fields = []
-
-                    # Update username if provided
-                    if username is not None:
-                        cell = sheet.cell(row=row_index, column=3)  # Column C
-                        cell.value = username
-                        updated_fields.append(f"username={username}")
-
-                    # Update status if provided
-                    if status is not None:
-                        cell = sheet.cell(row=row_index, column=4)  # Column D
-                        cell.value = status
-                        updated_fields.append(f"status={status}")
-
-                        cell.fill = PatternFill(
-                            start_color="ADD8E6",
-                            end_color="ADD8E6",
-                            fill_type="solid",
-                        )  # Light blue
-
-                    # Save the changes if any updates were made
-                    if updated_fields:
-                        workbook.save(file_path)
-
-            # Run the blocking operation in a thread pool
-            await asyncio.to_thread(update_excel)
-
-        except Exception as e:
-            error_msg = f"Failed to update Excel file: {str(e)}"
-            logger.error(error_msg)
-            raise Exception(error_msg)
+    from accounts_manager import update_account_in_storage
+    return await update_account_in_storage(auth_token, username, status)
 
 
 async def add_task_log_entry(

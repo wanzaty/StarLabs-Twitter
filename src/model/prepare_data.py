@@ -1,6 +1,6 @@
 from src.utils.constants import DataForTasks
 from src.utils.config import Config
-from src.utils.reader import read_pictures, read_txt_file
+from data_manager import read_pictures, read_txt_file
 
 def extract_tweet_id(tweet_link: str) -> str:
     tweet_link = tweet_link.strip()
@@ -49,7 +49,7 @@ async def prepare_data(tasks: list[str]) -> DataForTasks:
             user_input = input("Enter the link to the tweet for comment: ")
             tweet_id = extract_tweet_id(user_input)
             data.LINKS_FOR_COMMENTS = tweet_id
-            data.COMMENTS = read_txt_file("comments", "data/comment_text.txt")
+            data.COMMENTS = read_txt_file("comments", "comment")
         
         if "quote" in task:
             user_input = input("Enter links to tweets for quotes: ")
@@ -65,7 +65,7 @@ async def prepare_data(tasks: list[str]) -> DataForTasks:
             data.USERNAMES_TO_UNFOLLOW = user_input.replace(",", " ").replace("@", "").split()
 
         if "tweet" in task or "quote" in task:
-            data.TEXT_FOR_TWEETS = read_txt_file("tweets", "data/tweet_text.txt")
+            data.TEXT_FOR_TWEETS = read_txt_file("tweets", "tweet")
         
         if "image" in task:
             data.IMAGES = await read_pictures("data/images")
