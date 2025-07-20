@@ -6,6 +6,7 @@ Text-based content management with analytics
 import os
 import base64
 import random
+import json
 from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 from loguru import logger
@@ -150,12 +151,13 @@ class SimpleDataManager:
     def load_media_items(self) -> List[MediaItem]:
         """Load media items from images directory"""
         try:
-            file_path = os.path.join(self.data_dir, "media_items.json")
-            if os.path.exists(file_path):
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                    self.media_items = [self._deserialize_media_item(item_data) for item_data in data]
-                    logger.success(f"Loaded {len(self.media_items)} media items")
+            # For simplicity, just scan the images directory
+            self.media_items = []
+            self._scan_images_directory()
+            logger.success(f"Loaded {len(self.media_items)} media items")
+            except Exception as e:
+                logger.error(f"Error loading media items: {e}")
+                self.media_items = []
     def _scan_images_directory(self):
         """Scan images directory for new files"""
         images_dir = os.path.join(self.data_dir, "images")
@@ -174,18 +176,12 @@ class SimpleDataManager:
                         
                         # Get file info
                         file_size = len(file_data)
-                        file_format = filename.split('.')[-1].lower()
-                        
-                        # Try to get image dimensions
-                        dimensions = self._get_image_dimensions(file_path)
                         
                         media_item = MediaItem(
                             filename=filename,
                             file_path=file_path,
                             base64_data=base64_data,
-                            file_size=file_size,
-                            dimensions=dimensions,
-                            format=file_format
+                            file_size=file_size
                         )
                         
                         self.media_items.append(media_item)
