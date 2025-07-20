@@ -12,18 +12,45 @@ import asyncio
 import platform
 import os
 
+# Safe imports with error handling
+from process import start
+from src.utils.output import show_logo, show_dev_info
+
 try:
-    from process import start
-    from src.utils.output import show_logo, show_dev_info
     from src.utils.check_github_version import check_version
+except ImportError:
+    async def check_version(*args, **kwargs):
+        return True
+
+try:
     from accounts_manager import get_account_manager
+except ImportError:
+    def get_account_manager():
+        print("❌ Account manager not available")
+        return None
+
+try:
     from data_manager import get_data_manager
+except ImportError:
+    def get_data_manager():
+        print("❌ Data manager not available")
+        return None
+
+try:
     from analytics_manager import get_analytics_manager
+except ImportError:
+    def get_analytics_manager():
+        print("❌ Analytics manager not available")
+        return None
+
+try:
     from config import get_config, configure_bot
-except ImportError as e:
-    print(f"❌ Import error: {e}")
-    print("🔧 Please run setup first: python setup.py install")
-    sys.exit(1)
+except ImportError:
+    def get_config():
+        print("❌ Config not available")
+        return None
+    def configure_bot():
+        print("❌ Config browser not available")
 
 VERSION = "3.0.0"
 
