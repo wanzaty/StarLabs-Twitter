@@ -52,7 +52,7 @@ A next-generation pure Python Twitter automation platform with advanced analytic
 - Python 3.9 or higher (3.11+ recommended)
 - 2GB+ RAM (4GB+ recommended)
 - 1GB+ free disk space
-- JSON storage for Twitter accounts
+- Text file storage for Twitter accounts and content
 - Valid Twitter authentication tokens
 - (Optional) Proxies for account management
 - (Optional) Telegram bot for notifications
@@ -122,16 +122,10 @@ python main.py
 ```
 StarLabs-Twitter/
 ├── data/
-│   ├── accounts.json        # Twitter accounts data
-│   ├── config.json          # Bot configuration
-│   ├── content/             # Content management
-│   │   ├── tweet_content.json
-│   │   ├── comment_content.json
-│   │   ├── hashtag_content.json
-│   │   └── emoji_content.json
+│   ├── accounts.txt         # Twitter accounts data
+│   ├── tweets.txt           # Tweet texts
+│   ├── comments.txt         # Comment texts
 │   ├── images/              # Media files
-│   ├── templates/           # Content templates
-│   └── analytics/           # Analytics data
 ├── src/
 │   ├── model/               # Core Twitter functionality
 │   │   ├── twitter/         # Twitter API handlers

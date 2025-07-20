@@ -7,7 +7,7 @@ from src.model.twitter.client import Twitter
 from src.utils.config import Config
 from src.utils.telegram_logger import send_telegram_message
 from src.utils.constants import Account
-from src.utils.logs import update_account_in_excel, add_task_log_entry
+from src.utils.logs import update_account_in_storage, add_task_log_entry
 
 
 class Start:
@@ -41,8 +41,7 @@ class Start:
             if self.twitter_instance.username:
                 pass
 
-            await update_account_in_excel(
-                "data/accounts.xlsx",
+            await update_account_in_storage(
                 self.auth_token,
                 self.twitter_instance.username,
                 self.twitter_instance.account_status,

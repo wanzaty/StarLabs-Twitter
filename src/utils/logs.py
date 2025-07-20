@@ -86,14 +86,12 @@ async def process_item(tracker: ProgressTracker, item_id: int):
     await tracker.increment(1, f"📝 Account {item_id} status: {status}")
 
 
-async def update_account_in_excel(
-    file_path: str, auth_token: str, username: str = None, status: str = None
+async def update_account_in_storage(
+    auth_token: str, username: str = None, status: str = None
 ) -> None:
     """
-    Update account information (now uses JSON storage instead of Excel)
+    Update account information in storage
     """
-    from accounts_manager import update_account_in_storage
-    return await update_account_in_storage(auth_token, username, status)
 
 
 async def add_task_log_entry(
