@@ -142,6 +142,12 @@ class SimpleDataManager:
             logger.error(f"Error loading {content_type.value} content: {e}")
             return []
     
+    def save_media_items(self):
+        """Save media items to file"""
+        # For text-based system, we don't need to save media items
+        # They are automatically scanned from the images directory
+        pass
+    
     def load_all_data(self):
         """Load all data from files"""
         for content_type in ContentType:

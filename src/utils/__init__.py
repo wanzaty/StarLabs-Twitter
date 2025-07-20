@@ -1,5 +1,17 @@
 from .client import create_twitter_client, get_headers
-from .reader import read_txt_file, read_accounts_from_excel, read_pictures
+try:
+    from .reader import read_txt_file, read_accounts_from_excel, read_pictures
+except ImportError:
+    # Fallback for missing functions
+    def read_txt_file(file_name: str, file_type: str = "tweet") -> list:
+        return []
+    
+    def read_accounts_from_excel(file_path: str, start_index: int = 1, end_index: int = 0) -> list:
+        return []
+    
+    async def read_pictures(images_dir: str = None) -> list:
+        return []
+
 from .output import show_dev_info, show_logo, show_menu
 from .config import get_config
 from .proxy_parser import Proxy

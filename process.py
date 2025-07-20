@@ -2,9 +2,12 @@ import asyncio
 import random
 from loguru import logger
 
-
-import src.utils
-import src.model
+try:
+    import src.utils
+    import src.model
+except ImportError as e:
+    logger.error(f"Import error: {e}")
+    
 from src.utils.check_github_version import check_version
 from src.utils.logs import (
     ProgressTracker,

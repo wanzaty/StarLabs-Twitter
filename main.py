@@ -25,10 +25,14 @@ async def main():
     show_dev_info()
     
     # Initialize all managers
-    account_manager = get_account_manager()
-    data_manager = get_data_manager()
-    analytics_manager = get_analytics_manager()
-    config = get_config()
+    try:
+        account_manager = get_account_manager()
+        data_manager = get_data_manager()
+        analytics_manager = get_analytics_manager()
+        config = get_config()
+    except Exception as e:
+        logger.error(f"Error initializing managers: {e}")
+        return
 
     # You can pass a proxy string in format "user:pass@ip:port" if needed
     await check_version(VERSION, proxy="")
